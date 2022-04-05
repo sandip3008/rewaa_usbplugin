@@ -51,7 +51,7 @@ public class USBPrinterPlugin extends Plugin {
                     UsbDevice usbDevice = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
                     if (intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
                         Log.i(TAG, "success to grant permission for device " + usbDevice.getDeviceId() + ", vendor_id: " + Integer.toString(usbDevice.getVendorId(), 16) + " product_id: " + Integer.toString(usbDevice.getProductId(), 16));
-                        Toast.makeText(context, "success to grant permission for device " + usbDevice.getDeviceId() + ", vendor_id: " + Integer.toString(usbDevice.getVendorId(), 16) + " product_id: " + Integer.toString(usbDevice.getProductId(), 16), Toast.LENGTH_LONG).show();
+//                        Toast.makeText(context, "success to grant permission for device " + usbDevice.getDeviceId() + ", vendor_id: " + Integer.toString(usbDevice.getVendorId(), 16) + " product_id: " + Integer.toString(usbDevice.getProductId(), 16), Toast.LENGTH_LONG).show();
                         mUsbDevice = usbDevice;
 
                         JSObject ret = new JSObject();
@@ -62,13 +62,13 @@ public class USBPrinterPlugin extends Plugin {
                         sendEvent(ret);
 
                     } else {
-                        Toast.makeText(context, "User refuses to obtain USB device permissions", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "You cannot able to use USB printer without permissions", Toast.LENGTH_LONG).show();
                     }
                 }
             } else if (UsbManager.ACTION_USB_DEVICE_DETACHED.equals(action)) {
                 UsbDevice usbDevice = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
                 if (usbDevice != null) {
-                    Toast.makeText(context, "USB device has been turned off", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Attached USB printer disconnected", Toast.LENGTH_LONG).show();
                     closeConnectionIfExists();
 
                     JSObject ret = new JSObject();
@@ -81,10 +81,7 @@ public class USBPrinterPlugin extends Plugin {
                     if (mContext != null) {
                         UsbDevice device = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
                         if (device != null) {
-                            Toast.makeText(context, "Device attached: "+device.getManufacturerName(), Toast.LENGTH_LONG).show();
-
-                            if(mUSBManager==null)
-                                Toast.makeText(context, "usbmanager null", Toast.LENGTH_LONG).show();
+//                            Toast.makeText(context, "Device attached: "+device.getManufacturerName(), Toast.LENGTH_LONG).show();
 
                             if(mUSBManager!=null && !mUSBManager.hasPermission(device)){
                                 closeConnectionIfExists();
@@ -99,8 +96,6 @@ public class USBPrinterPlugin extends Plugin {
                             ret.put("vid", Integer.toString(device.getVendorId(), 16));
                             ret.put("pid", Integer.toString(device.getProductId(), 16));
                             sendEvent(ret);
-                        }else {
-                            Toast.makeText(context, "device null", Toast.LENGTH_SHORT).show();
                         }
 
 
